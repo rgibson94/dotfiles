@@ -1,5 +1,5 @@
 #!/bin/bash
-set -e
+#set -e
 
 ask() {
   # http://djm.me/ask
@@ -50,7 +50,11 @@ fi
 
 ask "Install packages?" Y && bash ./dependencies-${distro}.sh
 
+ask "Install symlink for .vimrc?" Y && ln -sfn ${dir}/.vimrc ${HOME}/.vimrc
+
 ask "Setup vim?" Y && {
+    # Get gpg key for rvm
+    curl -sSL https://rvm.io/mpapis.asc | gpg2 --import -
     # Install rvm
     curl -L https://get.rvm.io | bash -s stable --ruby
     # Download vim-plug
@@ -58,6 +62,8 @@ ask "Setup vim?" Y && {
             https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
     # Install the Plugins
     vim +PlugInstall +q +q
+    # Install CommandT
+    cd ~/.vim/plugged/command-t
+    rake make
 }
 
-ask "Install symlink for .vimrc?" Y && ln -sfn ${dir}/.vimrc ${HOME}/.vimrc
