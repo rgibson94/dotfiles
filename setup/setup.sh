@@ -40,8 +40,6 @@ if [ ! -e "${dir}/$(basename $0)" ]; then
 fi
 dir="${dir}/.."
 
-ask "Echo pwd" Y  && echo ${dir}
-
 distro=`lsb_release -si`
 
 echo $distro
@@ -51,3 +49,15 @@ if [ ! -f "dependencies-${distro}.sh" ]; then
 fi
 
 ask "Install packages?" Y && bash ./dependencies-${distro}.sh
+
+ask "Setup vim?" Y && {
+    # Install rvm
+    curl -L https://get.rvm.io | bash -s stable --ruby
+    # Download vim-plug
+    curl -fLo ~/.vim/autoload/plug.vim --create-dirs \
+            https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
+    # Install the Plugins
+    vim +PlugInstall +q +q
+}
+
+ask "Install symlink for .vimrc?" Y && ln -sfn ${dir}/.vimrc ${HOME}/.vimrc
