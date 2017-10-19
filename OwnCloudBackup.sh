@@ -25,15 +25,15 @@
 # Modify these variables to suit your needs
 #
 # Which day of the week do we want to do full backups? 0=Sunday
-  LEVEL0DAY=0
+  LEVEL0DAY=4
 # Where to create the backups; It should already exist
-  BACKUP_DIR=~/backups
+  BACKUP_DIR=/backup
 # Filesystems to backup seperated by spaces and the entire string in double quotes; each must start with /
   FILESYSTEMS="/var/www/owncloud/config /var/www/owncloud/data"
 # Should we email results? Also should we email critical errors?  0=false, 1=true 
   EMAIL=0
 # EMAIL address to send results to
-  EMAILADDRESS=rj@rjgibsonconsulting.com.com
+  EMAILADDRESS=rj@rjgibsonconsulting.com
 # Email Subject
   EMAILSUBJECT="$HOSTNAME Backup"
 # Only keep last weeks level0 backup (0) or keep all lvl 0 backups (1).  Keeping all data may take a lot of space!
@@ -55,8 +55,10 @@
 # Username for the database
   USERNAME="backup"
 # Password should be kept in a secrets file
-  PASSWORD=$(cat owncloud.secret)
-
+  PASSWORD=$(cat /owncloud.secret)
+# Compression tool to use
+  CTOOL=/home/rgibson/dotfiles/pigz-2.3.4/pigz
+# CTOOL=gzip
 
 # DO NOT EDIT BELOW THIS LINE
 #--------------------------------------------------------
@@ -191,7 +193,7 @@ if test $DAYOFWEEK -eq $LEVEL0DAY
       if test $COMPRESS -eq 1
         then
         #gzip it
-        gzip -$COMPRESSLEVEL $VERBOSECOMMAND $OUTFILE
+        $CTOOL -$COMPRESSLEVEL $VERBOSECOMMAND $OUTFILE
         rm -f $OUTFILE
       fi
     done
@@ -240,7 +242,7 @@ if test $DAYOFWEEK -eq $LEVEL0DAY
       if test $COMPRESS -eq 1
         then
         #gzip it
-        gzip -$COMPRESSLEVEL $VERBOSECOMMAND $OUTFILE
+        $CTOOL -$COMPRESSLEVEL $VERBOSECOMMAND $OUTFILE
         rm -f $OUTFILE
       fi
     done
@@ -261,7 +263,7 @@ if [ $DBBACKUP -eq 1 ]; then
     if test $COMPRESS -eq 1
         then
         #gzip it
-        gzip -$COMPRESSLEVEL $VERBOSECOMMAND $OUTFILE
+        $CTOOL -$COMPRESSLEVEL $VERBOSECOMMAND $OUTFILE
         rm -f $OUTFILE
     fi
 fi
@@ -300,7 +302,7 @@ exec 2>&3
 if test $COMPRESSLOG -eq 1
   then
   #gzip it
-  gzip -$COMPRESSLEVEL $LOGFILE  > /dev/null 2>&1
+  $CTOOL -$COMPRESSLEVEL $LOGFILE  > /dev/null 2>&1
   rm -f $LOGFILE  > /dev/null 2>&1
 fi
 
