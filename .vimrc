@@ -13,6 +13,22 @@ Plug 'MarcWeber/vim-addon-mw-utils'
 Plug 'tomtom/tlib_vim'
 Plug 'wincent/command-t'
 Plug 'jlanzarotta/bufexplorer'
+Plug 'w0rp/ale'
+Plug 'junegunn/fzf', {'dir': '~/.fzf', 'do': './install --all' }
+Plug 'junegunn/fzf.vim'
+Plug 'tpope/vim-eunuch'
+Plug 'scrooloose/nerdtree'
+Plug 'junegunn/gv.vim'
+Plug 'majutsushi/tagbar'
+Plug 'pangloss/vim-javascript'
+Plug 'easymotion/vim-easymotion'
+Plug 'nathanaelkane/vim-indent-guides'
+Plug 'sirver/ultisnips'
+Plug 'thinca/vim-quickrun'
+Plug 'octol/vim-cpp-enhanced-highlight'
+Plug 'vim-latex/vim-latex'
+Plug 'matze/vim-move'
+Plug 'Xuyuanp/nerdtree-git-plugin'
 call plug#end()
 
 filetype plugin on
@@ -48,8 +64,8 @@ let g:NERDSpaceDelims = 1
 
 set expandtab
 set smarttab
-set shiftwidth=4
-set tabstop=4
+set shiftwidth=3
+set tabstop=3
 
 set number
 set cursorline
@@ -75,5 +91,12 @@ let mapleader = ","
 let g:mapleader = ","
 
 nmap <leader>w :w!<cr>
+nmap <leader>q :wq<cr>
+
+nmap <leader>f :Files<cr>
+
+nmap <leader>n :NERDTreeToggle<cr>
+
+nmap <C-n> :NERDTreeToggle<CR>
 
 set ruler
